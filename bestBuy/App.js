@@ -1,20 +1,35 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import QRScanner from "./components/QRScanner";
 import { Button, Header, Overlay } from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0, isVisible: true };
+    this.state = { count: 0, isVisible: true, hasPermission: null, setHasPermission: null, scanned : false, setScanned :false };
+  }
+
+  handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
+  useEffect = () => {
+    async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    }
   }
   onPress = () => {
     this.setState({
       count: this.state.count + 1
     });
   };
+
   render() {
     return (
+
       <View style={styles.container}>
         <Header
           leftComponent={{ icon: "menu", color: "#fff" }}
@@ -29,18 +44,23 @@ export default class App extends Component {
             justifyContent: "center"
           }}
         >
+
           <Overlay
             isVisible={this.state.isVisible}
             onBackdropPress={() => this.setState({ isVisible: false })}
             style={{ flex: 1, justifyContent: "center" }}
           >
-            <Text>Purchase Confirmation </Text>
-            <View style={{ height: 100, paddingVertical: 100 }}>
+            <Text>Hello World </Text>
+            <View style={{ height: 100, paddingVertical: 200 }}>
               <Image
-                style={{ width: 250, height: 150 }}
-                source={require("./assets/dell.jpg")}
+               // style={{ width: 250, height: 150 }}
+               // source={require("./assets/dell.jpg")}
               />
-              <Text>Dell XPS 13</Text>
+              <BarCodeScanner
+                onBarCodeScanned={this.state.scanned ? undefined : handleBarCodeScanned}
+                style={StyleSheet.absoluteFillObject}
+              />
+              {this.state.scanned && <Button title={'Tap to Scan Again'} onPress={() => this.setState({ setScanned: false })} />}
             </View>
           </Overlay>
         </View>
