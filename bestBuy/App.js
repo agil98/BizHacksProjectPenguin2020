@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import MainPage from "./components/MainPage";
+import QRScanner from "./components/QRScanner";
 import { Button, Header } from "react-native-elements";
 
 export default class App extends Component {
