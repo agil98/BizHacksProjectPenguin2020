@@ -3,16 +3,37 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import QRScanner from "./components/QRScanner";
 import { Button, Header, Overlay } from "react-native-elements";
 import Receipt from "./Receipt";
+import { sendPurchase, replyToOffer } from "./Network";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = { count: 0, isVisible: true };
   }
-  onPress = () => {
-    this.setState({
-      count: this.state.count + 1
-    });
+  onPress = async () => {
+    try {
+      let response = await fetch(
+        "http://206.12.68.63:3001/storeData/registerPurchase",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            uuid: 2250,
+            pid: 1000,
+            stid: 32,
+            date: Date.now()
+          })
+        }
+      );
+      let res = await response.json();
+      console.log(res);
+      return res;
+    } catch (e) {
+      console.error(e);
+    }
   };
   render() {
     return (
@@ -56,7 +77,10 @@ export default class App extends Component {
         <View style={styles.space}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              onPress={() => this.setState({ isVisible: true })}
+              onPress={() => {
+                this.setState({ isVisible: true });
+                this.onPress();
+              }}
             >
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Purchase</Text>
