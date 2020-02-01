@@ -20,7 +20,8 @@ router.get('/registerOrder', function(req, res, next) {
 /* GET registerPurchase. */
 router.get('/', function(req, res, next) {
     res.status(200);
-    res.send("HELLO WORLD!");
+    res.send("THE BIZHACKS APP IS WORKING!");
 });
+
 
 module.exports = router;
