@@ -1,26 +1,20 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import QRScanner from "./components/QRScanner";
 import { Button, Header, Overlay } from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0, isVisible: true, hasPermission: null, setHasPermission: null, scanned : false, setScanned :false };
+    this.state = { count: 0, purchaseVisible: false, scannerVisible: false, hasPermission: null, setHasPermission: null, scanned : false, setScanned :false};
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  handleBarCodeScanned = ({data}) => {
+    this.setState({ scanned : true, purchaseVisible: true, scannerVisible: false})
+    this.setState({purchaseVisible: true})
+
   };
 
-  useEffect = () => {
-    async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    }
-  }
   onPress = () => {
     this.setState({
       count: this.state.count + 1
@@ -29,13 +23,38 @@ export default class App extends Component {
 
   render() {
     return (
-
       <View style={styles.container}>
         <Header
           leftComponent={{ icon: "menu", color: "#fff" }}
           centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
         />
+
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          
+          <Overlay
+            isVisible={this.state.scannerVisible}
+            onBackdropPress={() => this.setState({ scannerVisible: false })}
+            style={{ flex: 1, justifyContent: "center" }}
+          >
+            <Text>Please Scan Item to Purchase </Text>
+            <View style={{ height: 100, paddingVertical: 200 }}>
+            <BarCodeScanner
+                onBarCodeScanned={this.state.scanned ? undefined : this.handleBarCodeScanned}
+                style={StyleSheet.absoluteFillObject}
+            />
+            </View>
+          </Overlay>
+        </View>
+
+
         <View
           style={{
             flex: 1,
@@ -46,21 +65,16 @@ export default class App extends Component {
         >
 
           <Overlay
-            isVisible={this.state.isVisible}
-            onBackdropPress={() => this.setState({ isVisible: false })}
+            isVisible={this.state.purchaseVisible}
+            onBackdropPress={() => this.setState({ purchaseVisible: false })}
             style={{ flex: 1, justifyContent: "center" }}
           >
-            <Text>Hello World </Text>
-            <View style={{ height: 100, paddingVertical: 200 }}>
+            <Text>Purchase</Text>
+            <View style={{ height: 100, paddingVertical: 100 }}>
               <Image
-               // style={{ width: 250, height: 150 }}
-               // source={require("./assets/dell.jpg")}
+                style={{ width: 250, height: 150 }}
+                source={require("./assets/dell.jpg")}
               />
-              <BarCodeScanner
-                onBarCodeScanned={this.state.scanned ? undefined : handleBarCodeScanned}
-                style={StyleSheet.absoluteFillObject}
-              />
-              {this.state.scanned && <Button title={'Tap to Scan Again'} onPress={() => this.setState({ setScanned: false })} />}
             </View>
           </Overlay>
         </View>
@@ -74,7 +88,7 @@ export default class App extends Component {
         <View style={styles.space}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              onPress={() => this.setState({ isVisible: true })}
+              onPress={() => this.setState({ scannerVisible: true })}
             >
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Purchase</Text>
