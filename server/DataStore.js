@@ -3,7 +3,7 @@
 class DataStore {
 
     #purchaseData = [];
-    #orderData = [];
+    #offerData = [];
 
     constructor() {
         return;
@@ -21,16 +21,16 @@ class DataStore {
         }
     }
 
-    storeOrder(req) {
-        let index = this.#orderData.findIndex(obj => obj.uuid === req.uuid);
+    storeOffer(req) {
+        let index = this.#offerData.findIndex(obj => obj.uuid === req.uuid);
 
         if (index === -1) {
-            let newObj = {uuid: req.uuid, orders: [{orderID: req.orderID, pid: req.pid,
+            let newObj = {uuid: req.uuid, offers: [{offerID: req.offerID, pid: req.pid,
                     stid: req.stid, date: req.date, status: req.status}]};
-            this.#orderData.push(newObj);
+            this.#offerData.push(newObj);
         } else {
-            let obj = this.#orderData[index];
-            obj.orders.push({orderID: req.orderID, pid: req.pid,
+            let obj = this.#offerData[index];
+            obj.offers.push({offerID: req.offerID, pid: req.pid,
                 stid: req.stid, date: req.date, status: req.status});
         }
     }
