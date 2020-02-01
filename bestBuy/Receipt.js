@@ -5,7 +5,7 @@ import { Button, Header, Overlay } from "react-native-elements";
 export default class Receipt extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0, isVisible: true };
+    this.state = { count: 0, isVisible: this.props.isVisible };
   }
   render() {
     return (
@@ -18,7 +18,7 @@ export default class Receipt extends Component {
         }}
       >
         <Overlay
-          isVisible={this.state.isVisible}
+          isVisible={this.prop.open}
           onBackdropPress={() => this.setState({ isVisible: false })}
           style={{ flex: 1, justifyContent: "center" }}
         >

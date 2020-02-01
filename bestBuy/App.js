@@ -22,7 +22,30 @@ export default class App extends Component {
           centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
         />
-        <Receipt></Receipt>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Overlay
+            isVisible={this.state.isVisible}
+            onBackdropPress={() => this.setState({ isVisible: false })}
+            style={{ flex: 1, justifyContent: "center" }}
+          >
+            <Text>Purchase Confirmation </Text>
+
+            <View style={{ height: 100, paddingVertical: 100 }}>
+              <Image
+                style={{ width: 250, height: 150 }}
+                source={require("./assets/dell.jpg")}
+              />
+              <Text>Dell XPS 13 has been purchased for $199.99 </Text>
+            </View>
+          </Overlay>
+        </View>
 
         <View style={styles.title}>
           <Text style={styles.text}>
