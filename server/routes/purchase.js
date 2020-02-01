@@ -12,8 +12,6 @@ router.post('/registerPurchase', function(req, res, next) {
 /* GET registerPurchase. */
 router.post('/registerOffer', function(req, res, next) {
     dS.storeOffer(req.body);
-    res.status(200);
-    res.send("DONE!");
 });
 
 function generateOffers(res) {
@@ -24,8 +22,6 @@ function generateOffers(res) {
     let arr = [prod, serv];
 
     res.json(arr);
-    res.status(200);
-    res.send("DONE!");
 }
 
 module.exports = router;
