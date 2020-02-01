@@ -4,3 +4,15 @@
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+server/.idea/jsLibraryMappings.xml
+server/.idea/misc.xml
+server/.idea/modules.xml
+server/.idea/runConfigurations/bin_www.xml
+server/.idea/server.iml
+server/.idea/vcs.xml
+server/.idea/workspace.xml
+server/node_modules/
+server/views/error.pug
+server/views/index.pug
+server/views/layout.pug
+server/public/stylesheets/style.css
