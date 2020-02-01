@@ -1,18 +1,26 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import QRScanner from "./components/QRScanner";
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Button, Header, Overlay } from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0, isVisible: true };
+    this.state = { count: 0, purchaseVisible: false, scannerVisible: false, hasPermission: null, setHasPermission: null, scanned : false, setScanned :false};
   }
+
+  handleBarCodeScanned = ({data}) => {
+    this.setState({ scanned : true, purchaseVisible: true, scannerVisible: false})
+    this.setState({purchaseVisible: true})
+
+  };
+
   onPress = () => {
     this.setState({
       count: this.state.count + 1
     });
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -21,6 +29,7 @@ export default class App extends Component {
           centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
         />
+
         <View
           style={{
             flex: 1,
@@ -29,18 +38,43 @@ export default class App extends Component {
             justifyContent: "center"
           }}
         >
+          
           <Overlay
-            isVisible={this.state.isVisible}
-            onBackdropPress={() => this.setState({ isVisible: false })}
+            isVisible={this.state.scannerVisible}
+            onBackdropPress={() => this.setState({ scannerVisible: false })}
             style={{ flex: 1, justifyContent: "center" }}
           >
-            <Text>Purchase Confirmation </Text>
+            <Text>Please Scan Item to Purchase </Text>
+            <View style={{ height: 100, paddingVertical: 200 }}>
+            <BarCodeScanner
+                onBarCodeScanned={this.state.scanned ? undefined : this.handleBarCodeScanned}
+                style={StyleSheet.absoluteFillObject}
+            />
+            </View>
+          </Overlay>
+        </View>
+
+
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+
+          <Overlay
+            isVisible={this.state.purchaseVisible}
+            onBackdropPress={() => this.setState({ purchaseVisible: false })}
+            style={{ flex: 1, justifyContent: "center" }}
+          >
+            <Text>Purchase</Text>
             <View style={{ height: 100, paddingVertical: 100 }}>
               <Image
                 style={{ width: 250, height: 150 }}
                 source={require("./assets/dell.jpg")}
               />
-              <Text>Dell XPS 13</Text>
             </View>
           </Overlay>
         </View>
@@ -54,7 +88,7 @@ export default class App extends Component {
         <View style={styles.space}>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              onPress={() => this.setState({ isVisible: true })}
+              onPress={() => this.setState({ scannerVisible: true })}
             >
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Purchase</Text>
