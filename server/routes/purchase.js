@@ -23,5 +23,4 @@ router.get('/', function(req, res, next) {
     res.send("THE BIZHACKS APP IS WORKING!");
 });
 
-
 module.exports = router;
