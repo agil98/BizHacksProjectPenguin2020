@@ -1,31 +1,36 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner } from "expo-barcode-scanner";
 import { Button, Header, Overlay, PricingCard } from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-         count: 0, 
-         purchaseVisible: false, 
-         scannerVisible: false, 
-         hasPermission: null, 
-         setHasPermission: null, 
-         scanned : false, 
-         setScanned :false};
-         service: {},
-         product: {},
-         offersVisible: false
-         isVisible: false,
+      count: 0,
+      purchaseVisible: false,
+      scannerVisible: false,
+      hasPermission: null,
+      setHasPermission: null,
+      scanned: false,
+      setScanned: false,
+      service: {},
+      product: {},
+      offersVisible: false,
+      isVisible: false
+    };
   }
 
-  handleBarCodeScanned = ({data}) => {
-    this.setState({ scanned : true, purchaseVisible: true, scannerVisible: false})
-    this.setState({purchaseVisible: true})
+  handleBarCodeScanned = ({ data }) => {
+    this.setState({
+      scanned: true,
+      purchaseVisible: true,
+      scannerVisible: false
+    });
+    this.setState({ purchaseVisible: true });
+  };
 
-
-  onPress = async () => {
+  getData = async () => {
     try {
       let response = await fetch(
         "http://206.12.68.63:3001/storeData/registerPurchase",
@@ -55,12 +60,6 @@ export default class App extends Component {
     }
   };
 
-  onPress = () => {
-    this.setState({
-      count: this.state.count + 1
-    });
-  };
-
   render() {
     return (
       <View style={styles.container}>
@@ -69,7 +68,6 @@ export default class App extends Component {
           centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
         />
-
         <View
           style={{
             flex: 1,
@@ -78,7 +76,7 @@ export default class App extends Component {
             alignItems: "center",
             justifyContent: "center"
           }}
-        >  
+        >
           <Overlay
             isVisible={this.state.scannerVisible}
             onBackdropPress={() => this.setState({ scannerVisible: false })}
@@ -86,10 +84,12 @@ export default class App extends Component {
           >
             <Text>Please Scan Item to Purchase </Text>
             <View style={{ height: 100, paddingVertical: 200 }}>
-            <BarCodeScanner
-                onBarCodeScanned={this.state.scanned ? undefined : this.handleBarCodeScanned}
-            />
+              <BarCodeScanner
                 style={StyleSheet.absoluteFillObject}
+                onBarCodeScanned={
+                  this.state.scanned ? undefined : this.handleBarCodeScanned
+                }
+              />
             </View>
           </Overlay>
         </View>
@@ -104,8 +104,7 @@ export default class App extends Component {
           }}
         >
           <Overlay
-            isVisible={this.state.isVisible}
-            // onBackdropPress={() => this.setState({ isVisible: false })}
+            isVisible={this.state.purchaseVisible}
             style={{ flex: 1, justifyContent: "center" }}
           >
             <Text>Purchase Confirmation</Text>
@@ -125,7 +124,7 @@ export default class App extends Component {
               <View style={{}}>
                 <TouchableOpacity
                   onPress={() => {
-                    this.setState({ isVisible: false });
+                    this.setState({ purchaseVisible: false });
                     this.setState({ offersVisible: true });
                   }}
                 >
