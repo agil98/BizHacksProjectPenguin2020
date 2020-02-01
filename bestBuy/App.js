@@ -4,7 +4,6 @@ import QRCodeScanner from "./components/QRCodeScanner";
 
 export default function App() {
   return (
-      <MainPage />
       <QRCodeScanner />
   );
 }
