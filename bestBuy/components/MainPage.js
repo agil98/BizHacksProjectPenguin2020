@@ -1,12 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MainPage from "./components/MainPage";
 
-export default function App() {
+export default function MainPage() {
   return (
-    <View style={styles.container}>
-      <Text>Project Penguin!!!!!!!!!!!</Text>
-      <MainPage />
+    <View>
+      <Text>Hello</Text>
     </View>
   );
 }
