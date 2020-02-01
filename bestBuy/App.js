@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import MainPage from "./components/MainPage";
-import { Button, Header } from "react-native-elements";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { Button, Header, Overlay } from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0 };
+    this.state = { count: 0, isVisible: true };
   }
   onPress = () => {
     this.setState({
@@ -21,6 +20,29 @@ export default class App extends Component {
           centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
         />
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Overlay
+            isVisible={this.state.isVisible}
+            onBackdropPress={() => this.setState({ isVisible: false })}
+            style={{ flex: 1, justifyContent: "center" }}
+          >
+            <Text>Purchase Confirmation </Text>
+            <View style={{ height: 100, paddingVertical: 100 }}>
+              <Image
+                style={{ width: 250, height: 150 }}
+                source={require("./assets/dell.jpg")}
+              />
+              <Text>Dell XPS 13</Text>
+            </View>
+          </Overlay>
+        </View>
 
         <View style={styles.title}>
           <Text style={styles.text}>
@@ -28,10 +50,11 @@ export default class App extends Component {
           </Text>
           <Text>{this.state.count}</Text>
         </View>
-
         <View style={styles.space}>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={this.onPress}>
+            <TouchableOpacity
+              onPress={() => this.setState({ isVisible: true })}
+            >
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Purchase</Text>
               </View>
