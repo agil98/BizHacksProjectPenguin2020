@@ -22,14 +22,16 @@ class DataStore {
     }
 
     storeOrder(req) {
-        let index = this.#purchaseData.findIndex(obj => obj.uuid === req.uuid);
+        let index = this.#orderData.findIndex(obj => obj.uuid === req.uuid);
 
         if (index === -1) {
-            let newObj = {uuid: req.uuid, purchases: [{orderID: req.orderID, pid: req.pid, stid: req.stid, date: req.date}]};
+            let newObj = {uuid: req.uuid, orders: [{orderID: req.orderID, pid: req.pid,
+                    stid: req.stid, date: req.date, status: req.status}]};
             this.#orderData.push(newObj);
         } else {
             let obj = this.#orderData[index];
-            obj.orders.push({orderID: req.orderID, pid: req.pid, stid: req.stid, date: req.date});
+            obj.orders.push({orderID: req.orderID, pid: req.pid,
+                stid: req.stid, date: req.date, status: req.status});
         }
     }
 

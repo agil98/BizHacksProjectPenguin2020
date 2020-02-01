@@ -4,23 +4,17 @@ var dataStore = require("../DataStore")
 let dS = dataStore.getDataStore();
 
 /* GET registerPurchase. */
-router.get('/registerPurchase', function(req, res, next) {
-    dS.storePurchase(req);
+router.post('/registerPurchase', function(req, res, next) {
+    dS.storePurchase(req.body);
     res.status(200);
     res.send("DONE!");
 });
 
 /* GET registerPurchase. */
-router.get('/registerOrder', function(req, res, next) {
-    dS.storeOrder(req);
+router.post('/registerOrder', function(req, res, next) {
+    dS.storeOrder(req.body);
     res.status(200);
     res.send("DONE!");
-});
-
-/* GET registerPurchase. */
-router.get('/', function(req, res, next) {
-    res.status(200);
-    res.send("THE BIZHACKS APP IS WORKING!");
 });
 
 module.exports = router;
