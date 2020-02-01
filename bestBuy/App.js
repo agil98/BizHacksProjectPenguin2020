@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import QRScanner from "./components/QRScanner";
-import { Button, Header, Overlay } from "react-native-elements";
-import Receipt from "./Receipt";
-import { sendPurchase, replyToOffer } from "./Network";
+import { Button, Header, Overlay, PricingCard } from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0, isVisible: true };
+    this.state = {
+      isVisible: false,
+      product: {},
+      service: {},
+      offersVisible: false
+    };
   }
+
   onPress = async () => {
     try {
       let response = await fetch(
@@ -29,7 +33,11 @@ export default class App extends Component {
         }
       );
       let res = await response.json();
-      console.log(res);
+      // console.log(res);
+      this.setState({ product: res[0] });
+      this.setState({ service: res[1] });
+      console.log(this.state.product);
+      console.log(this.state.service);
       return res;
     } catch (e) {
       console.error(e);
@@ -46,6 +54,7 @@ export default class App extends Component {
         <View
           style={{
             flex: 1,
+            flexDirection: "column",
             backgroundColor: "#fff",
             alignItems: "center",
             justifyContent: "center"
@@ -53,17 +62,35 @@ export default class App extends Component {
         >
           <Overlay
             isVisible={this.state.isVisible}
-            onBackdropPress={() => this.setState({ isVisible: false })}
+            // onBackdropPress={() => this.setState({ isVisible: false })}
             style={{ flex: 1, justifyContent: "center" }}
           >
-            <Text>Purchase Confirmation </Text>
-
-            <View style={{ height: 100, paddingVertical: 100 }}>
+            <Text>Purchase Confirmation</Text>
+            <View
+              style={{
+                height: 100,
+                // paddingVertical: 100,
+                alignItems: "center"
+              }}
+            >
               <Image
                 style={{ width: 250, height: 150 }}
                 source={require("./assets/dell.jpg")}
               />
               <Text>Dell XPS 13 has been purchased for $199.99 </Text>
+              <View style={{ height: 50 }}></View>
+              <View style={{}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({ isVisible: false });
+                    this.setState({ offersVisible: true });
+                  }}
+                >
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Close</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </Overlay>
         </View>
@@ -72,7 +99,6 @@ export default class App extends Component {
           <Text style={styles.text}>
             Welcome to OmniPay, scan an item to purchase!
           </Text>
-          <Text>{this.state.count}</Text>
         </View>
         <View style={styles.space}>
           <View style={styles.buttonContainer}>
@@ -88,6 +114,36 @@ export default class App extends Component {
             </TouchableOpacity>
           </View>
         </View>
+
+        <Overlay
+          isVisible={this.state.offersVisible}
+          onBackdropPress={() => this.setState({ offersVisible: false })}
+        >
+          <Text h3>Latest Personalized Offers</Text>
+
+          <PricingCard
+            color="#4f9deb"
+            title="Free"
+            price="$0"
+            info={["1 User", "Basic Support", "All Core Features"]}
+            button={{ title: "GET STARTED", icon: "flight-takeoff" }}
+          />
+          <PricingCard
+            color="#4f9deb"
+            title="Free"
+            price="$0"
+            info={["1 User", "Basic Support", "All Core Features"]}
+            button={{ title: "GET STARTED", icon: "flight-takeoff" }}
+          />
+          <Text>
+            {this.state.product.description} for only $
+            {this.state.product.price}
+          </Text>
+
+          <Text>
+            {this.state.service.description} Only {this.state.product.price}
+          </Text>
+        </Overlay>
       </View>
     );
   }
@@ -119,6 +175,15 @@ const styles = StyleSheet.create({
     height: 80,
     paddingTop: 38,
     backgroundColor: "coral"
+  },
+  buttonContainer2: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  button2: {
+    paddingVertical: 100,
+    borderRadius: 8
   },
 
   buttonContainer: {
