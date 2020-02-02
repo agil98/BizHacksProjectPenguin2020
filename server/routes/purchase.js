@@ -15,10 +15,10 @@ router.post('/registerOffer', function(req, res, next) {
 });
 
 function generateOffers(res) {
-    let prod = { prodName: "Corsair Keyboard", type: 0, description: "A new corsair mechanical " +
-            "keyboard to go along with your Dell XPS 13!", orderID: 9999, pid: 1234, stid: 778, price: 150 };
+    let prod = { prodName: "Corsair Keyboard", type: 0, description: "Corsair mechanical " +
+            "keyboard to go along with your Dell XPS 13!", promoKey: "Holiday Season Special Sale", orderID: 9999, pid: 1234, stid: 778, price: 150 };
     let serv = { prodName: "GeekSquad Support", type: 1, description: "Get 2 years of geek squad support " +
-            "on your new DELL XPS 13!", orderID: 9999, pid: 1234, stid: 778, price: 200 };
+            "on your new DELL XPS 13!", promoKey: "Black Friday Special Sale", orderID: 9999, pid: 1234, stid: 778, price: 200 };
     let arr = [prod, serv];
 
     res.json(arr);
