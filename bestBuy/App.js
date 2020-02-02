@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import LinearGradient from 'react-native-linear-gradient';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Button, Header, Overlay, PricingCard } from "react-native-elements";
@@ -63,16 +64,12 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header
-          leftComponent={{ icon: "menu", color: "#fff" }}
-          centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
-          rightComponent={{ icon: "home", color: "#fff" }}
-        />
+        
         <View
           style={{
             flex: 1,
             flexDirection: "column",
-            backgroundColor: "#fff",
+            backgroundColor: "#000",
             alignItems: "center",
             justifyContent: "center"
           }}
@@ -82,8 +79,8 @@ export default class App extends Component {
             onBackdropPress={() => this.setState({ scannerVisible: false })}
             style={{ flex: 1, justifyContent: "center" }}
           >
-            <Text>Please Scan Item to Purchase </Text>
-            <View style={{ height: 100, paddingVertical: 200 }}>
+            <Text style={styles.main}> Please Scan Item to Purchase </Text>
+            <View style={{ height: 100, paddingVertical: 225 }}>
               <BarCodeScanner
                 style={StyleSheet.absoluteFillObject}
                 onBarCodeScanned={
@@ -93,7 +90,39 @@ export default class App extends Component {
             </View>
           </Overlay>
         </View>
+        <Image
+                style={{ width: 250, height: 150 }}
+                source={require("./assets/bestbuy.jpg")}
+              />
+         <View style={{
+            flex: 1,
+            flexDirection: "column",
+            backgroundColor: "00003A",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 10,
+            paddingVertical: 50
+          }}>
+          <Text style={styles.text}>
+            Welcome to OmniPay
+          </Text>
 
+          <Text style={styles.text}>
+            Scan an item to purchase!
+          </Text>
+
+        </View>
+        <View style={styles.space}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() => this.setState({ scannerVisible: true })}
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Purchase</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
         <View
           style={{
             flex: 1,
@@ -137,23 +166,6 @@ export default class App extends Component {
           </Overlay>
         </View>
 
-        <View style={styles.title}>
-          <Text style={styles.text}>
-            Welcome to OmniPay, scan an item to purchase!
-          </Text>
-        </View>
-        <View style={styles.space}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => this.setState({ scannerVisible: true })}
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Purchase</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         <Overlay
           isVisible={this.state.offersVisible}
           onBackdropPress={() => this.setState({ offersVisible: false })}
@@ -189,16 +201,22 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
+  main:{
+    fontFamily: 'Futura'
+  },
   space: {
     paddingVertical: 80
   },
   text: {
-    fontSize: 24
-    // fontFamily: "Helvetica"
+    fontSize: 30,
+    color : "white",
+    alignContent: 'center',
+    justifyContent: 'center',
+     fontFamily: "Futura-CondensedExtraBold"
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#054068",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -207,8 +225,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // height: "80%",
     justifyContent: "center",
-    paddingHorizontal: 10
-    // paddingVertical: 80
+    paddingHorizontal: 30,
+    fontSize: 30
   },
   header: {
     height: 80,
@@ -233,12 +251,13 @@ const styles = StyleSheet.create({
 
   button: {
     borderRadius: 8,
-    paddingVertical: 20,
-    paddingHorizontal: 35,
-    backgroundColor: "blue"
+    paddingVertical: 30,
+    paddingHorizontal: 40,
+    backgroundColor: "#57c0fb"
   },
 
   buttonText: {
+    fontFamily: 'Futura',
     color: "white",
     fontWeight: "bold",
     textTransform: "uppercase",
