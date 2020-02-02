@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { Button, Header, Overlay, PricingCard } from "react-native-elements";
+console.disableYellowBox = true;
+import {
+  Button,
+  Header,
+  Overlay,
+  Text,
+  Divider,
+  ListItem
+} from "react-native-elements";
 
 export default class App extends Component {
   constructor(props) {
@@ -14,9 +22,9 @@ export default class App extends Component {
       setHasPermission: null,
       scanned: false,
       setScanned: false,
-      service: {},
+      service: [],
       product: {},
-      offersVisible: false,
+      offersVisible: true,
       isVisible: false
     };
   }
@@ -28,12 +36,36 @@ export default class App extends Component {
       scannerVisible: false
     });
     this.setState({ purchaseVisible: true });
+    this.getData();
+  };
+
+  requestDeal = async offer => {
+    offer.date = Date.now();
+    this.setState({ service: [] });
+    console.log(offer);
+    try {
+      let response = await fetch(
+        "http://206.12.68.149:3001/storeData/registerOffer",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(offer)
+        }
+      );
+      console.log(body);
+      return response.statusCode === 200;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   getData = async () => {
     try {
       let response = await fetch(
-        "http://206.12.68.63:3001/storeData/registerPurchase",
+        "http://206.12.68.149:3001/storeData/registerPurchase",
         {
           method: "POST",
           headers: {
@@ -50,8 +82,8 @@ export default class App extends Component {
       );
       let res = await response.json();
       // console.log(res);
-      this.setState({ product: res[0] });
-      this.setState({ service: res[1] });
+      this.setState({ product: res });
+      this.setState({ service: res });
       console.log(this.state.product);
       console.log(this.state.service);
       return res;
@@ -64,9 +96,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <Header
-          leftComponent={{ icon: "menu", color: "#fff" }}
           centerComponent={{ text: "OmniPay", style: { color: "#fff" } }}
-          rightComponent={{ icon: "home", color: "#fff" }}
         />
         <View
           style={{
@@ -155,33 +185,26 @@ export default class App extends Component {
         </View>
 
         <Overlay
+          // change this later
           isVisible={this.state.offersVisible}
           onBackdropPress={() => this.setState({ offersVisible: false })}
         >
-          <Text h3>Latest Personalized Offers</Text>
-
-          <PricingCard
-            color="#4f9deb"
-            title="Free"
-            price="$0"
-            info={["1 User", "Basic Support", "All Core Features"]}
-            button={{ title: "GET STARTED", icon: "flight-takeoff" }}
-          />
-          <PricingCard
-            color="#4f9deb"
-            title="Free"
-            price="$0"
-            info={["1 User", "Basic Support", "All Core Features"]}
-            button={{ title: "GET STARTED", icon: "flight-takeoff" }}
-          />
-          <Text>
-            {this.state.product.description} for only $
-            {this.state.product.price}
-          </Text>
-
-          <Text>
-            {this.state.service.description} Only {this.state.product.price}
-          </Text>
+          <Text h4>Offers For You</Text>
+          <Divider style={{ backgroundColor: "black" }} />
+          <View>
+            {this.state.service.map((item, i) => (
+              <ListItem
+                key={i}
+                title={item.description}
+                subtitle={"$" + item.price}
+                leftIcon="av-timer"
+                bottomDivider
+                chevron
+                badge
+                onPress={() => this.requestDeal(item)}
+              />
+            ))}
+          </View>
         </Overlay>
       </View>
     );
