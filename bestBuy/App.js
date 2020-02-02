@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 console.disableYellowBox = true;
 import {
@@ -24,7 +24,7 @@ export default class App extends Component {
       setScanned: false,
       service: [],
       product: {},
-      offersVisible: true,
+      offersVisible: false,
       isVisible: false
     };
   }
@@ -95,7 +95,6 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        
         <View
           style={{
             flex: 1,
@@ -122,10 +121,11 @@ export default class App extends Component {
           </Overlay>
         </View>
         <Image
-                style={{ width: 250, height: 150 }}
-                source={require("./assets/bestbuy.jpg")}
-              />
-         <View style={{
+          style={{ width: 250, height: 150 }}
+          source={require("./assets/bestbuy.jpg")}
+        />
+        <View
+          style={{
             flex: 1,
             flexDirection: "column",
             backgroundColor: "00003A",
@@ -133,15 +133,12 @@ export default class App extends Component {
             alignItems: "center",
             paddingHorizontal: 10,
             paddingVertical: 50
-          }}>
-          <Text style={styles.text}>
-            Welcome to OmniPay
-          </Text>
+          }}
+        >
+          <Text style={styles.text}>Welcome to OmniPay</Text>
 
-          <Text style={styles.text}>
-            Scan an item to purchase!
-          </Text>
-
+          <Text style={styles.text}>Scan an item to </Text>
+          <Text style={styles.text}>purchase!</Text>
         </View>
         <View style={styles.space}>
           <View style={styles.buttonContainer}>
@@ -225,18 +222,18 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  main:{
-    fontFamily: 'Futura'
+  main: {
+    // fontFamily: "Futura"
   },
   space: {
     paddingVertical: 80
   },
   text: {
     fontSize: 30,
-    color : "white",
-    alignContent: 'center',
-    justifyContent: 'center',
-     fontFamily: "Futura-CondensedExtraBold"
+    color: "white",
+    alignContent: "center",
+    justifyContent: "center"
+    // fontFamily: "Futura-CondensedExtraBold"
   },
   container: {
     flex: 1,
@@ -281,7 +278,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontFamily: 'Futura',
+    // fontFamily: "Futura",
     color: "white",
     fontWeight: "bold",
     textTransform: "uppercase",
