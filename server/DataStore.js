@@ -32,11 +32,15 @@ class DataStore {
             let newObj = {uuid: req.uuid, offers: [{offerID: req.offerID, pid: req.pid,
                     stid: req.stid, date: req.date, status: req.status}]};
             this.#offerData.push(newObj);
+            index = 0;
         } else {
             let obj = this.#offerData[index];
             obj.offers.push({offerID: req.offerID, pid: req.pid,
                 stid: req.stid, date: req.date, status: req.status});
         }
+
+        console.log(this.#offerData.length);
+        console.log(this.#offerData[index]);
     }
 
 }
